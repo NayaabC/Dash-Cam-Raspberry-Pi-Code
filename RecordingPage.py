@@ -11,7 +11,7 @@ from Objects.Incident import Incident
 from Objects.User import User
 from Sounds.SoundFuncs import SoundFuncs
 from TripSummaryPage import TripSummaryPage
-from TFLite_detection_cam import *
+from TFLite_detection import *
 
 
 class RecordingPage: #Page that opens when user starts recording

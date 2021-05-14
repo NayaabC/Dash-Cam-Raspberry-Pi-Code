@@ -1,17 +1,17 @@
-######## Webcam Object Detection Using Tensorflow-trained Classifier #########
-#
-# Author: Evan Juras
-# Date: 10/27/19
 # Description: 
 # This program uses a TensorFlow Lite model to perform object detection on a live webcam
-# feed. It draws boxes and scores around the objects of interest in each frame from the
+# feed. Video footage of the processed frame is saved under /Videos/date-time.mp4
+# It draws boxes and scores around the objects of interest in each frame from the
 # webcam. To improve FPS, the webcam object runs in a separate thread from the main program.
 # This script will work with either a Picamera or regular USB webcam.
-#
+
+# Enable use_TPU so the corresponding TensorFlow Lite file for the Coral USB Accelerator is used
+# for the object detection. This would move operations away from the Raspberry Pi, allowing for an increase in performance.
+
 # This code is based off the TensorFlow Lite image classification example at:
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
-#
-# I added my own method of drawing boxes and labels using OpenCV.
+# and is adjusted from the Youtube Guide by Edje Electronics:
+# https://www.youtube.com/watch?v=aimSGOAUI8Y
 
 # Import packages
 import os
@@ -88,11 +88,13 @@ parser.add_argument('--edgetpu', help='Use Coral Edge TPU Accelerator to speed u
 args = parser.parse_args()
 
 MODEL_NAME = 'Sample_TFLite_model'
-GRAPH_NAME = args.graph
-LABELMAP_NAME = args.labels
-min_conf_threshold = float(args.threshold)
-resW, resH = args.resolution.split('x')
+GRAPH_NAME = 'detect.tflite'
+LABELMAP_NAME = 'labelmap.txt'
+min_conf_threshold = float(0.5)
+resW, resH = (1280, 720)
 imW, imH = int(resW), int(resH)
+
+#Set to True when using the Coral USB Accelerator.
 use_TPU = False
 
 # Import TensorFlow libraries
